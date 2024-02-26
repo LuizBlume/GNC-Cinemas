@@ -1,3 +1,30 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useMovieStore } from '../stores/movie'
+
+const selectedShopping = ref('mueller')
+
+const router = useRouter()
+const pathAtual = router.currentRoute.value.path
+
+const storeMovie = useMovieStore()
+
+storeMovie.cine = selectedShopping.value
+
+console.log(pathAtual)
+
+// Utilize o defineEmits diretamente para declarar os eventos que serão emitidos
+const emit = defineEmits(['parametroShopping'])
+
+function handleSelectChange(event) {
+  selectedShopping.value = event.target.value
+  storeMovie.cine = event.target.value
+  emit('parametroShopping', selectedShopping.value)
+  // console.log(selectedShopping.value)
+}
+</script>
+
 <template>
   <header id="header">
     <nav id="nav">
@@ -7,7 +34,6 @@
             ><img src="/src/assets/images/gnc-logo-2.png" alt="" id="logo"
           /></router-link>
           <div id="container-shopping" v-show="pathAtual !== '/tela-filme'">
-            ;
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -73,33 +99,6 @@
     </nav>
   </header>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useMovieStore } from '../stores/movie'
-
-const selectedShopping = ref('mueller')
-
-const router = useRouter()
-const pathAtual = router.currentRoute.value.path
-
-const storeMovie = useMovieStore()
-
-storeMovie.cine = selectedShopping.value
-
-console.log(pathAtual)
-
-// Utilize o defineEmits diretamente para declarar os eventos que serão emitidos
-const emit = defineEmits(['parametroShopping'])
-
-function handleSelectChange(event) {
-  selectedShopping.value = event.target.value
-  storeMovie.cine = event.target.value
-  emit('parametroShopping', selectedShopping.value)
-  // console.log(selectedShopping.value)
-}
-</script>
 
 <style scoped>
 #nav {
